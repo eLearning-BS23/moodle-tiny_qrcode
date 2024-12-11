@@ -35,13 +35,12 @@ use context_system;
 use core_external\external_function_parameters;
 use core_external\external_value;
 use core_external\external_single_structure;
-
 use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
 use Endroid\QrCode\QrCode;
-use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
 use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\RoundBlockSizeMode;
 
 /**
  * External function tiny_qrcode_external
@@ -85,25 +84,16 @@ class tiny_qrcode_external extends external_api {
         try {
             // Generate QR Code.
             $writer = new PngWriter();
-            $qrcode = QrCode::create($content)
-                ->setEncoding(new Encoding('UTF-8'))
-                ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
-                ->setSize($size)
-                ->setMargin($margin)
-                ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
-
-                ->setForegroundColor(new Color(
-                    max(0, min(255, $fgcoloraata->r)),
-                    max(0, min(255, $fgcoloraata->g)),
-                    max(0, min(255, $fgcoloraata->b)),
-                    max(0, min(1, $fgcoloraata->a))
-                ))
-                ->setBackgroundColor(new Color(
-                    max(0, min(255, $bgcolordata->r)),
-                    max(0, min(255, $bgcolordata->g)),
-                    max(0, min(255, $bgcolordata->b)),
-                    max(0, min(1, $bgcolordata->a))
-                ));
+            $qrcode = new QrCode(
+                data: $content,
+                encoding: new Encoding('UTF-8'),
+                errorCorrectionLevel: ErrorCorrectionLevel::Low,
+                size: $size,
+                margin: $margin,
+                roundBlockSizeMode: RoundBlockSizeMode::Margin,
+                foregroundColor: new Color($fgcoloraata->r, $fgcoloraata->g, $fgcoloraata->b),
+                backgroundColor: new Color($bgcolordata->r, $bgcolordata->g, $bgcolordata->b)
+            );
 
             $result = $writer->write($qrcode);
             $datauri = $result->getDataUri();
