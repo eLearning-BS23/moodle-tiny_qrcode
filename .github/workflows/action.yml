@@ -84,7 +84,7 @@ jobs:
  
       - name: Mustache Lint
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci mustache lib/editor/tiny/plugins/qrcode
+        run: moodle-plugin-ci mustache lib/editor/tiny/plugins/qrcode/templates/insert_qrcode_modal.mustache
  
       - name: Grunt
         if: ${{ !cancelled() }}
