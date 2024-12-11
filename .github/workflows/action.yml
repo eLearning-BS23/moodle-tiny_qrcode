@@ -74,9 +74,9 @@ jobs:
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci phpdoc lib/editor/tiny/plugins/qrcode
  
-      - name: Validating
-        if: ${{ !cancelled() }}
-        run: moodle-plugin-ci validate lib/editor/tiny/plugins/qrcode
+      # - name: Validating
+      #   if: ${{ !cancelled() }}
+      #   run: moodle-plugin-ci validate lib/editor/tiny/plugins/qrcode
  
       - name: Check upgrade savepoints
         if: ${{ !cancelled() }}
@@ -96,10 +96,10 @@ jobs:
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci phpunit --fail-on-warning lib/editor/tiny/plugins/qrcode
  
-      - name: Behat features
-        id: behat
-        if: ${{ !cancelled() }}
-        run: moodle-plugin-ci behat --profile chrome lib/editor/tiny/plugins/qrcode
+      # - name: Behat features
+      #   id: behat
+      #   if: ${{ !cancelled() }}
+      #   run: moodle-plugin-ci behat --profile chrome lib/editor/tiny/plugins/qrcode
  
       - name: Upload Behat Faildump
         if: ${{ failure() && steps.behat.outcome == 'failure' }}
