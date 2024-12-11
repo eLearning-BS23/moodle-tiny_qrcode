@@ -1,0 +1,7 @@
+alignment,tiny_qrcode
+alignment_bottom,tiny_qrcode
+alignment_left,tiny_qrcode
+alignment_middle,tiny_qrcode
+alignment_right,tiny_qrcode
+alignment_top,tiny_qrcode
+helplinktext,tiny_qrcode

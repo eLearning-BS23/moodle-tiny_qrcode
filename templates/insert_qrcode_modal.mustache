@@ -1,0 +1,74 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+
+{{< core/modal }}
+    {{$body}}
+        <form class="mform tiny_form tiny_qrcode" method="post" id="tiny_qrcode_form">
+           
+            <label for="qrcodecontent" style="padding-bottom: 5px; margin-bottom: 0; padding-top: 0px;">
+                {{#str}} qrcodecontent, tiny_qrcode {{/str}}
+            </label>
+            <input class="form-control fullwidth" type="text" id="qrcodecontent" required="true" placeholder="e.g. https://www.google.com/ " />
+            
+
+            <label for="qrcode_size"  style="padding-bottom: 5px; margin-bottom: 0; padding-top: 10px;">
+                {{#str}} qrcode_size, tiny_qrcode {{/str}}
+            </label>
+            <input class="form-control fullwidth" type="number" id="qrcode_size" required="true" size="10" 
+                value="200" min="5" max="100000" />
+             
+
+            <label for="qrcode_margin"  style="padding-bottom: 5px; margin-bottom: 0; padding-top: 10px;">
+                {{#str}} qrcode_margin, tiny_qrcode {{/str}}
+            </label>
+            <input class="form-control fullwidth" type="number" id="qrcode_margin" size="10" min="5" max="100" 
+                required="true" value="10" />
+             
+
+            <label for="qrcode_backgroundcolor"  style="padding-bottom: 5px; margin-bottom: 0; padding-top: 20px;">
+                {{#str}} backgroundcolor, tiny_qrcode {{/str}}
+            </label>
+            <input type="color" id="bgtemplateColor" name="bgtemplateColor" value="#ffffff" onchange="updateColorPreview(this.value)" class="color-circle">
+            <br>
+            
+            <label for="qrcode_foregroundcolor"  style="padding-bottom: 0px; margin-bottom: 0; padding-top: 20px;">
+                {{#str}} forgroungcolor, tiny_qrcode {{/str}}
+            </label>
+            <input type="color" id="templateColor" name="templateColor" value="#000000" onchange="updateColorPreview(this.value)" class="color-circle" style="padding-bottom: 0px; margin-bottom: 0;">
+            
+
+            <div class="mdl-align"  style="padding-bottom: 0; margin-bottom: 0; padding-top: 15px;">
+                <br>
+                <button class="btn btn-secondary submit" type="button" id="qrcode-submit">
+                    {{#str}} insertqrcode, tiny_qrcode {{/str}}
+                </button>
+            </div>
+        </form>
+
+    {{/body}}
+
+{{/ core/modal }}
+
+<style>
+    .color-circle {
+        width: 30px;
+        height: 30px;
+        border-radius: 10%;
+        padding: 0;
+        cursor: pointer;
+    }
+</style>

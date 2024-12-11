@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<libraries>
+    <library>
+        <location>thirdparty/vendor/bacon/bacon-qr-code</location>
+        <name>QR Code Generator</name>
+        <version>2.0.4</version>
+        <license>BSD-2-Clause</license>
+    </library>
+    <library>
+        <location>thirdparty/vendor/dasprid/enum</location>
+        <name>PHP enum implementation</name>
+        <version>v1.0.3</version>
+        <license>BSD-2-Clause</license>
+    </library>
+    <library>
+        <location>thirdparty/vendor/endroid/qr-code</location>
+        <name>Endroid QR Code</name>
+        <version>v4.2.2</version>
+        <license>MIT</license>
+    </library>
+    <library>
+        <location>thirdparty/vendor/composer</location>`    
+        <name>Automatically generated files by composer</name>
+    </library>
+    <library>
+        <location>thirdparty/vendor/autoload.php</location>
+        <name>Automatically generated file by composer</name>
+    </library>
+</libraries>
