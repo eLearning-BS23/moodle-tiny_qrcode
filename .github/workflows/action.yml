@@ -21,15 +21,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.1']
-        moodle-branch: ['MOODLE_404_STABLE']
+        php: ['8.3']
+        moodle-branch: ['MOODLE_405_STABLE']
         database: [mariadb]
  
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
         with:
-          path: ./mod/quiz/accessrule/proctoring
+          path: .lib/editor/tiny/plugins/qrcode
  
       - name: Setup PHP ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
@@ -48,58 +48,58 @@ jobs:
           echo "NVM_DIR=$HOME/.nvm" >> $GITHUB_ENV
  
       - name: Install moodle-plugin-ci
-        run: moodle-plugin-ci install --plugin ./mod/quiz/accessrule/proctoring --db-host=127.0.0.1 --no-plugin-node
+        run: moodle-plugin-ci install --plugin ./lib/editor/tiny/plugins/qrcode --db-host=127.0.0.1 --no-plugin-node
         env:
           DB: ${{ matrix.database }}
           MOODLE_BRANCH: ${{ matrix.moodle-branch }}
  
       - name: PHP Code Beautifier Fixer
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phpcbf mod/quiz/accessrule/proctoring
+        run: moodle-plugin-ci phpcbf lib/editor/tiny/plugins/qrcode
  
       - name: PHP Lint
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phplint mod/quiz/accessrule/proctoring
+        run: moodle-plugin-ci phplint lib/editor/tiny/plugins/qrcode
  
       - name: PHP Mess Detector
         continue-on-error: true
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phpmd mod/quiz/accessrule/proctoring
+        run: moodle-plugin-ci phpmd lib/editor/tiny/plugins/qrcode
  
       - name: Moodle Code Checker
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phpcs mod/quiz/accessrule/proctoring
+        run: moodle-plugin-ci phpcs lib/editor/tiny/plugins/qrcode
  
       - name: Moodle PHPDoc Checker
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phpdoc mod/quiz/accessrule/proctoring
+        run: moodle-plugin-ci phpdoc lib/editor/tiny/plugins/qrcode
  
       - name: Validating
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci validate mod/quiz/accessrule/proctoring
+        run: moodle-plugin-ci validate lib/editor/tiny/plugins/qrcode
  
       - name: Check upgrade savepoints
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci savepoints mod/quiz/accessrule/proctoring
+        run: moodle-plugin-ci savepoints lib/editor/tiny/plugins/qrcode
  
       - name: Mustache Lint
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci mustache mod/quiz/accessrule/proctoring
+        run: moodle-plugin-ci mustache lib/editor/tiny/plugins/qrcode
  
       - name: Grunt
         if: ${{ !cancelled() }}
-        # run: moodle-plugin-ci grunt --max-lint-warnings 0 mod/quiz/accessrule/proctoring --force
-        run: moodle-plugin-ci grunt  mod/quiz/accessrule/proctoring || true
+        # run: moodle-plugin-ci grunt --max-lint-warnings 0 lib/editor/tiny/plugins/qrcode --force
+        run: moodle-plugin-ci grunt  lib/editor/tiny/plugins/qrcode || true
  
  
       - name: PHPUnit tests
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phpunit --fail-on-warning mod/quiz/accessrule/proctoring
+        run: moodle-plugin-ci phpunit --fail-on-warning lib/editor/tiny/plugins/qrcode
  
       - name: Behat features
         id: behat
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci behat --profile chrome mod/quiz/accessrule/proctoring
+        run: moodle-plugin-ci behat --profile chrome lib/editor/tiny/plugins/qrcode
  
       - name: Upload Behat Faildump
         if: ${{ failure() && steps.behat.outcome == 'failure' }}
