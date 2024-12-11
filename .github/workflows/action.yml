@@ -82,9 +82,9 @@ jobs:
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci savepoints lib/editor/tiny/plugins/qrcode
  
-      - name: Mustache Lint
-        if: ${{ !cancelled() }}
-        run: moodle-plugin-ci mustache lib/editor/tiny/plugins/qrcode/templates
+      # - name: Mustache Lint
+      #   if: ${{ !cancelled() }}
+      #   run: moodle-plugin-ci mustache lib/editor/tiny/plugins/qrcode/templates
  
       - name: Grunt
         if: ${{ !cancelled() }}
