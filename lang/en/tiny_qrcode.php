@@ -32,6 +32,7 @@
  $string['green'] = 'Green';
  $string['insertqrcode'] = 'Insert QR Code';
  $string['invalid_color_values'] = 'Invalid color values. Please ensure values are within range.';
+ $string['pluginname'] = 'QR code';
  $string['qrcode_insert_failed'] = 'Failed to insert QR Code. Please try again.';
  $string['qrcode_management'] = 'QrCode Generator';
  $string['qrcode_margin'] = 'QR Code Margin';
