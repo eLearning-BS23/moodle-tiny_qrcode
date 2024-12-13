@@ -27,7 +27,7 @@ You can install this plugin from [Moodle plugins directory](https://moodle.org/p
 - Insert width, margin, background and foreground color (Optional) of qrcode
 - Done!
 
-<img src="https://i.imgur.com/bd8eqUw">
+<img src="https://i.imgur.com/bd8eqUw.png">
 
 ## License
 
