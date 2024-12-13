@@ -31,7 +31,6 @@ require_once($CFG->dirroot . '/course/lib.php');
 
 
 use core_external\external_api;
-use context_system;
 use core_external\external_function_parameters;
 use core_external\external_value;
 use core_external\external_single_structure;
@@ -110,7 +109,6 @@ class tiny_qrcode_external extends external_api {
             ];
         }
     }
-
     /**
      * Parameters description for web service
      *

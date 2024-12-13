@@ -32,15 +32,22 @@ export default class QrcodeModal extends Modal {
     static TEMPLATE = `${component}/insert_qrcode_modal`;
 
     registerEventListeners() {
-        // Call the parent registration.
-        super.registerEventListeners();
 
         const attachSubmitHandler = () => {
             const qrcodeForm = window.document.getElementById('qrcode-submit');
+            const closebtn= window.document.querySelector('div.modal div.modal-content div.modal-header button.btn-close');
+            if (closebtn){
+                closebtn.addEventListener( 'click', (event) => {
+                    this.destroy();
+
+                });}
+
             if (qrcodeForm) {
                 if (!qrcodeForm.dataset.listenerAttached) {
                     qrcodeForm.addEventListener( 'click', (event) => {
                         event.preventDefault();
+                        const contentInput = window.document.querySelector('#qrcodecontent');
+                        if(contentInput.value.trim() !== ''){
                         const hexToRgba = (hex, alpha = 1) => {
                             hex = hex.replace(/^#/, '');
                             const bigint = parseInt(hex, 16);
@@ -99,6 +106,13 @@ export default class QrcodeModal extends Modal {
                             }
                         }]);
                         this.destroy();
+                    }
+                    else{
+                       // alert('Enter value in QR Code Contest');
+                       contentInput.style.border = '2px solid red';
+                       
+                       return;
+                    }
                     });
                     qrcodeForm.dataset.listenerAttached = true;
                 }
