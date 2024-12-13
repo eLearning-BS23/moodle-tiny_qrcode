@@ -5,7 +5,7 @@ Moodle tiny qr-code is an tiny sub-plugin to easily create and integrate QRCode 
 This library helps you generate QR codes in a jiffy. Makes use of bacon/bacon-qr-code to generate the matrix and khanamiryan/qrcode-detector-decoder for validating generated QR codes.
 
 
-<img src="https://imgur.com/VCxekjY">
+<img src="https://i.imgur.com/VCxekjY">
 
 ## Features
 - Easy qrcode integration
@@ -27,7 +27,7 @@ You can install this plugin from [Moodle plugins directory](https://moodle.org/p
 - Insert width, margin, background and foreground color (Optional) of qrcode
 - Done!
 
-<img src="https://imgur.com/bd8eqUw">
+<img src="https://i.imgur.com/bd8eqUw">
 
 ## License
 
