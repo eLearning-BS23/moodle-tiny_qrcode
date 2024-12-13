@@ -47,6 +47,17 @@ export default class QrcodeModal extends Modal {
                     qrcodeForm.addEventListener( 'click', (event) => {
                         event.preventDefault();
                         const contentInput = window.document.querySelector('#qrcodecontent');
+                        const qrsize = window.document.querySelector('#qrcode_size').value;
+                        if(qrsize > 1000 || qrsize < 5){
+                            window.document.querySelector('#qrcode_size').style.border = '2px solid red';
+                            return;
+                        }
+                        const qrmargin = window.document.querySelector('#qrcode_margin').value;
+                        if(qrmargin> 100 || qrmargin < 5){
+                            window.document.querySelector('#qrcode_margin').style.border = '2px solid red';
+                            return;
+                        }
+
                         if(contentInput.value.trim() !== ''){
                         const hexToRgba = (hex, alpha = 1) => {
                             hex = hex.replace(/^#/, '');
@@ -108,9 +119,7 @@ export default class QrcodeModal extends Modal {
                         this.destroy();
                     }
                     else{
-                       // alert('Enter value in QR Code Contest');
                        contentInput.style.border = '2px solid red';
-                       
                        return;
                     }
                     });
