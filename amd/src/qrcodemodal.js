@@ -46,17 +46,34 @@ export default class QrcodeModal extends Modal {
                 if (!qrcodeForm.dataset.listenerAttached) {
                     qrcodeForm.addEventListener( 'click', (event) => {
                         event.preventDefault();
-                        const contentInput = window.document.querySelector('#qrcodecontent');
+                        let flag=0;
+
                         const qrsize = window.document.querySelector('#qrcode_size').value;
-                        if(qrsize > 1000 || qrsize < 5){
+                        if(qrsize > 1000 || qrsize < 25){
                             window.document.querySelector('#qrcode_size').style.border = '2px solid red';
-                            return;
+                            flag=1;
+                        } else{
+                            window.document.querySelector('#qrcode_size').style.border = '1px solid black';
                         }
+
                         const qrmargin = window.document.querySelector('#qrcode_margin').value;
                         if(qrmargin> 100 || qrmargin < 5){
                             window.document.querySelector('#qrcode_margin').style.border = '2px solid red';
-                            return;
+                            flag=1;
+                        } else {
+                            window.document.querySelector('#qrcode_margin').style.border = '1px solid black';
                         }
+
+                        const contentInput = window.document.querySelector('#qrcodecontent');
+                        if(contentInput.value.trim() === ''){
+                            contentInput.style.border = '2px solid red';
+                            flag=1;
+                        }else{
+                            contentInput.style.border = '1px solid black';
+                        }
+
+                        if(flag) return;
+                        flag=0;
 
                         if(contentInput.value.trim() !== ''){
                         const hexToRgba = (hex, alpha = 1) => {
@@ -120,7 +137,7 @@ export default class QrcodeModal extends Modal {
                     }
                     else{
                        contentInput.style.border = '2px solid red';
-                       return;
+                     //  return;
                     }
                     });
                     qrcodeForm.dataset.listenerAttached = true;
