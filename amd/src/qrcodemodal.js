@@ -25,10 +25,11 @@
 import Modal from 'core/modal';
 import {component} from './common';
 import AJAX from 'core/ajax';
+import ModalRegistry from 'core/modal_registry';
 
-export default class QrcodeModal extends Modal {
-
+const QrcodeModal = class extends Modal {
     static TYPE = `${component}/qrcodemodal`;
+
     static TEMPLATE = `${component}/insert_qrcode_modal`;
 
     registerEventListeners() {
@@ -36,10 +37,14 @@ export default class QrcodeModal extends Modal {
         const attachSubmitHandler = () => {
             const qrcodeForm = window.document.getElementById('qrcode-submit');
             const closebtn= window.document.querySelector('div.modal div.modal-content div.modal-header button.btn-close');
+            const closebtn1= window.document.querySelector('div.modal div.modal-content div.modal-header button.close');
             if (closebtn){
                 closebtn.addEventListener( 'click', (event) => {
                     this.destroy();
-
+                });}
+            if (closebtn1){
+                closebtn1.addEventListener( 'click', (event) => {
+                    this.destroy();
                 });}
 
             if (qrcodeForm) {
@@ -150,8 +155,7 @@ export default class QrcodeModal extends Modal {
         // Attach the submit handler
         attachSubmitHandler();
     }
-    configure(modalConfig) {
-        modalConfig.show = true;
-        super.configure(modalConfig);
-    }
-}
+};
+ModalRegistry.register(QrcodeModal.TYPE, QrcodeModal, QrcodeModal.TEMPLATE);
+
+export default QrcodeModal;

@@ -20,7 +20,6 @@
  * @package    tiny_qrcode
  * @copyright  2024 Brain Station 23 Ltd. <brainstation-23.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -29,11 +28,6 @@ require_once($CFG->libdir . '/externallib.php');
 require_once($CFG->dirroot . '/lib/editor/tiny/plugins/qrcode/thirdparty/vendor/autoload.php');
 require_once($CFG->dirroot . '/course/lib.php');
 
-
-use core_external\external_api;
-use core_external\external_function_parameters;
-use core_external\external_value;
-use core_external\external_single_structure;
 use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\QrCode;
@@ -43,7 +37,6 @@ use Endroid\QrCode\RoundBlockSizeMode;
 
 /**
  * External function tiny_qrcode_external
- *
  */
 class tiny_qrcode_external extends external_api {
     /**
@@ -58,6 +51,10 @@ class tiny_qrcode_external extends external_api {
      * @return array The generated QR code data or metadata.
      */
     public static function generate_qr_code($data) {
+        global $CFG;
+        $message = "inside external";
+        error_log($message);
+        
         // Validate context.
         $context = context_system::instance();
         self::validate_context($context);
@@ -65,10 +62,9 @@ class tiny_qrcode_external extends external_api {
         // Validate parameters.
         $params = self::validate_parameters(
             self::generate_qr_code_parameters(),
-            [
-                'data' => $data,
-            ]
+            array('data' => $data)
         );
+        
         $data = json_decode($params['data']);
 
         // Validate and parse inputs.
@@ -97,27 +93,30 @@ class tiny_qrcode_external extends external_api {
             $result = $writer->write($qrcode);
             $datauri = $result->getDataUri();
 
-            return [
+            return array(
                 'status' => true,
-                'datauri' => $datauri,
-            ];
+                'datauri' => $datauri
+            );
 
         } catch (Exception $e) {
-            return [
+            return array(
                 'status' => false,
-                'datauri' => 'Error generating QR code: ' . $e->getMessage(),
-            ];
+                'datauri' => 'Error generating QR code: ' . $e->getMessage()
+            );
         }
     }
+
     /**
      * Parameters description for web service
      *
      * @return external_function_parameters
      */
     public static function generate_qr_code_parameters() {
-        return new external_function_parameters([
-            'data' => new external_value(PARAM_TEXT, 'Content of the QR code', VALUE_REQUIRED),
-        ]);
+        return new external_function_parameters(
+            array(
+                'data' => new external_value(PARAM_TEXT, 'Content of the QR code', VALUE_REQUIRED)
+            )
+        );
     }
 
     /**
@@ -126,9 +125,11 @@ class tiny_qrcode_external extends external_api {
      * @return external_single_structure
      */
     public static function generate_qr_code_returns() {
-        return new external_single_structure([
-            'status' => new external_value(PARAM_BOOL, 'Status of QR code generation'),
-            'datauri' => new external_value(PARAM_TEXT, 'Data URI of generated QR code', VALUE_OPTIONAL),
-        ]);
+        return new external_single_structure(
+            array(
+                'status' => new external_value(PARAM_BOOL, 'Status of QR code generation'),
+                'datauri' => new external_value(PARAM_TEXT, 'Data URI of generated QR code', VALUE_OPTIONAL)
+            )
+        );
     }
 }

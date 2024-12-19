@@ -23,7 +23,7 @@
  */
 
 import QrcodeModal from './qrcodemodal';
-
+import * as ModalFactory from 'core/modal_factory';
 
 export default class QrcodeImage {
     editor = null;
@@ -37,8 +37,16 @@ export default class QrcodeImage {
         this.editor = editor;
     }
     async displayDialogue() {
-        this.currentModal = await QrcodeModal.create({
+        const modal = await ModalFactory.create({
+            type: QrcodeModal.TYPE,
             title: "Insert Qrcode Code",
+            templateContext: {},
+            removeOnClose: true,
+            large: false,
         });
+        this.currentModal = modal;
+
+        modal.show();
+
     }
 }
