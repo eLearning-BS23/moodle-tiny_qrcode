@@ -25,6 +25,7 @@
 import Modal from 'core/modal';
 import {component} from './common';
 import AJAX from 'core/ajax';
+import {getString} from 'core/str';
 
 export default class QrcodeModal extends Modal {
 
@@ -32,8 +33,10 @@ export default class QrcodeModal extends Modal {
     static TEMPLATE = `${component}/insert_qrcode_modal`;
 
     registerEventListeners() {
+        super.registerEventListeners();
 
         const attachSubmitHandler = () => {
+            const altTextPrefix = getString('title', 'tiny_qrcode');
             const qrcodeForm = window.document.getElementById('qrcode-submit');
             const closebtn= window.document.querySelector('div.modal div.modal-content div.modal-header button.btn-close');
             const closebtn1= window.document.querySelector('div.modal div.modal-content div.modal-header button.close');
@@ -121,7 +124,7 @@ export default class QrcodeModal extends Modal {
                                     if (response.status) {
                                         const targetEditor = window.currentQRCodeEditor;
                                         if (targetEditor) {
-                                            targetEditor.insertContent(`<img src="${response.datauri}" alt="QR Code for ${formData.content}" />`);
+                                            targetEditor.insertContent(`<img src="${response.datauri}" alt="${altTextPrefix}  ${formData.content}" />`);
                                         } else {
                                             console.error('No target editor found');
                                         }
@@ -147,7 +150,6 @@ export default class QrcodeModal extends Modal {
                     qrcodeForm.dataset.listenerAttached = true;
                 }
             } else {
-                console.warn('Form not found. Retrying...');
                 setTimeout(attachSubmitHandler, 500);
             }
         };

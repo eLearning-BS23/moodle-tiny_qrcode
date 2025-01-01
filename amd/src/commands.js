@@ -22,8 +22,9 @@
  *
  */
 
-import { qrcodeButtonName } from './common';
+import { qrcodeButtonName, component } from './common';
 import QrcodeImage from './qrcode';
+import {getString} from 'core/str';
 
 
 const registerImageCommand = (editor, qrcodeButtonText) => {
@@ -49,8 +50,8 @@ const registerImageCommand = (editor, qrcodeButtonText) => {
     });
 };
 export const getSetup = async () => {
+    const qrcodeButtonText = await getString('insertqrcode', component);
     return (editor) => {
-        const qrcodeButtonText = 'Insert QR Code';
         registerImageCommand(editor, qrcodeButtonText);
     };
 };
