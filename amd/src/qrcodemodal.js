@@ -36,7 +36,7 @@ const QrcodeModal = class extends Modal {
     registerEventListeners() {
 
         const attachSubmitHandler = async() => {
-            const altTextPrefix = await getString('title', 'tiny_qrcode');
+            const altTextPrefix = await getString('altTextPrefix', 'tiny_qrcode');
 
             const qrcodeForm = window.document.getElementById('qrcode-submit');
             const closebtn= window.document.querySelector('div.modal div.modal-content div.modal-header button.btn-close');
