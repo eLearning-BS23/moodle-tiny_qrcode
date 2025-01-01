@@ -24,6 +24,7 @@
  */
 
  $string['alpha'] = 'Alpha';
+ $string['altTextPrefix'] = 'QR Code for';
  $string['backgroundcolor'] = 'Background Color';
  $string['backgroundcolor_required'] = 'Background color values are required.';
  $string['blue'] = 'Blue';
@@ -43,3 +44,4 @@
  $string['qrcodecontent'] = 'QR Code Content';
  $string['qrcodecontent_required'] = 'QR Code content is required.';
  $string['red'] = 'Red';
+ $string['title'] = 'Insert Qrcode Code';

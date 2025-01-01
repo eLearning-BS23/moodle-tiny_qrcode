@@ -39,7 +39,7 @@ export default class QrcodeImage {
     async displayDialogue() {
         const modal = await ModalFactory.create({
             type: QrcodeModal.TYPE,
-            title: "Insert Qrcode Code",
+            title: await M.util.get_string('title', 'tiny_qrcode'),
             templateContext: {},
             removeOnClose: true,
             large: false,

@@ -22,7 +22,7 @@
  *
  */
 
-import { qrcodeButtonName } from './common';
+import { qrcodeButtonName, component } from './common';
 import QrcodeImage from './qrcode';
 
 
@@ -49,8 +49,8 @@ const registerImageCommand = (editor, qrcodeButtonText) => {
     });
 };
 export const getSetup = async () => {
+    const qrcodeButtonText = await M.util.get_string('insertqrcode', component);
     return (editor) => {
-        const qrcodeButtonText = 'Insert QR Code';
         registerImageCommand(editor, qrcodeButtonText);
     };
 };
