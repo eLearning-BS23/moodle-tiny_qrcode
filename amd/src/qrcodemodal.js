@@ -26,6 +26,7 @@ import Modal from 'core/modal';
 import {component} from './common';
 import AJAX from 'core/ajax';
 import ModalRegistry from 'core/modal_registry';
+import {get_string as getString} from 'core/str';
 
 const QrcodeModal = class extends Modal {
     static TYPE = `${component}/qrcodemodal`;
@@ -35,7 +36,7 @@ const QrcodeModal = class extends Modal {
     registerEventListeners() {
 
         const attachSubmitHandler = async() => {
-            const altTextPrefix = await M.util.get_string('title', 'tiny_qrcode');
+            const altTextPrefix = await getString('title', 'tiny_qrcode');
 
             const qrcodeForm = window.document.getElementById('qrcode-submit');
             const closebtn= window.document.querySelector('div.modal div.modal-content div.modal-header button.btn-close');
@@ -79,7 +80,9 @@ const QrcodeModal = class extends Modal {
                             contentInput.style.border = '1px solid black';
                         }
 
-                        if(flag) return;
+                        if(flag){
+                            return;
+                        }
                         flag=0;
 
                         if(contentInput.value.trim() !== ''){
@@ -125,17 +128,12 @@ const QrcodeModal = class extends Modal {
                                     const targetEditor = window.currentQRCodeEditor;
                                     if (targetEditor) {
                                         targetEditor.insertContent(`<img src="${response.datauri}" alt="${altTextPrefix}  ${formData.content}" />`);
-                                    } else {
-                                        console.error('No target editor found');
                                     }
-                                } else {
-                                    console.error('QR Code generation failed');
                                 }
                                 // Clean up the stored editor reference
                                 window.currentQRCodeEditor = null;
                             },
-                            fail: function(ex) {
-                                console.error('Web service call failed', ex);
+                            fail: function() {
                                 // Clean up the stored editor reference
                                 window.currentQRCodeEditor = null;
                             }

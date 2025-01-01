@@ -54,6 +54,3 @@ export default new Promise(async(resolve) => {
     // Resolve the Qrcode Plugin and include configuration.
     resolve([`${component}/plugin`, Configuration]);
 });
-
-
-/// NEEED

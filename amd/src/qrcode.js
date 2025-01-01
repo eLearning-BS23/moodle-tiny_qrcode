@@ -24,6 +24,7 @@
 
 import QrcodeModal from './qrcodemodal';
 import * as ModalFactory from 'core/modal_factory';
+import {get_string as getString} from 'core/str';
 
 export default class QrcodeImage {
     editor = null;
@@ -37,9 +38,10 @@ export default class QrcodeImage {
         this.editor = editor;
     }
     async displayDialogue() {
+        const modalTitle = await getString('title', 'tiny_qrcode');
         const modal = await ModalFactory.create({
             type: QrcodeModal.TYPE,
-            title: await M.util.get_string('title', 'tiny_qrcode'),
+            title: modalTitle,
             templateContext: {},
             removeOnClose: true,
             large: false,
@@ -47,6 +49,5 @@ export default class QrcodeImage {
         this.currentModal = modal;
 
         modal.show();
-
     }
 }
