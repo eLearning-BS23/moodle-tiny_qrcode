@@ -48,7 +48,6 @@ export default class QrcodeModal extends Modal {
                 closebtn1.addEventListener( 'click', (event) => {
                     this.destroy();
                 });}
-                
             if (qrcodeForm) {
                 if (!qrcodeForm.dataset.listenerAttached) {
                     qrcodeForm.addEventListener( 'click', (event) => {
@@ -79,7 +78,9 @@ export default class QrcodeModal extends Modal {
                             contentInput.style.border = '1px solid black';
                         }
 
-                        if(flag) return;
+                        if(flag){
+                            return;
+                        }
                         flag=0;
 
                         if(contentInput.value.trim() !== ''){
@@ -125,17 +126,12 @@ export default class QrcodeModal extends Modal {
                                         const targetEditor = window.currentQRCodeEditor;
                                         if (targetEditor) {
                                             targetEditor.insertContent(`<img src="${response.datauri}" alt="${altTextPrefix}  ${formData.content}" />`);
-                                        } else {
-                                            console.error('No target editor found');
                                         }
-                                    } else {
-                                        console.error('QR Code generation failed');
                                     }
                                     // Clean up the stored editor reference
                                     window.currentQRCodeEditor = null;
                                 },
-                                fail: function(ex) {
-                                    console.error('Web service call failed', ex);
+                                fail: function() {
                                     // Clean up the stored editor reference
                                     window.currentQRCodeEditor = null;
                                 }
