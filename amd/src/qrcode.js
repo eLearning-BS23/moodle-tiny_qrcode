@@ -23,7 +23,7 @@
  */
 
 import QrcodeModal from './qrcodemodal';
-
+import {getString} from 'core/str';
 
 export default class QrcodeImage {
     editor = null;
@@ -38,7 +38,7 @@ export default class QrcodeImage {
     }
     async displayDialogue() {
         this.currentModal = await QrcodeModal.create({
-            title: "Insert Qrcode Code",
+            title: await getString('title', 'tiny_qrcode'),
         });
     }
 }

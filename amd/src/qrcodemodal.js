@@ -25,6 +25,7 @@
 import Modal from 'core/modal';
 import {component} from './common';
 import AJAX from 'core/ajax';
+import {getString} from 'core/str';
 
 export default class QrcodeModal extends Modal {
 
@@ -33,7 +34,9 @@ export default class QrcodeModal extends Modal {
 
     registerEventListeners() {
 
-        const attachSubmitHandler = () => {
+        const attachSubmitHandler = async() => {
+            const altTextPrefix = await getString('altTextPrefix', 'tiny_qrcode');
+
             const qrcodeForm = window.document.getElementById('qrcode-submit');
             const closebtn= window.document.querySelector('div.modal div.modal-content div.modal-header button.btn-close');
             const closebtn1= window.document.querySelector('div.modal div.modal-content div.modal-header button.close');
@@ -45,7 +48,7 @@ export default class QrcodeModal extends Modal {
                 closebtn1.addEventListener( 'click', (event) => {
                     this.destroy();
                 });}
-                
+
             if (qrcodeForm) {
                 if (!qrcodeForm.dataset.listenerAttached) {
                     qrcodeForm.addEventListener( 'click', (event) => {
@@ -76,7 +79,9 @@ export default class QrcodeModal extends Modal {
                             contentInput.style.border = '1px solid black';
                         }
 
-                        if(flag) return;
+                        if(flag){
+                            return;
+                        }
                         flag=0;
 
                         if(contentInput.value.trim() !== ''){
@@ -121,18 +126,13 @@ export default class QrcodeModal extends Modal {
                                     if (response.status) {
                                         const targetEditor = window.currentQRCodeEditor;
                                         if (targetEditor) {
-                                            targetEditor.insertContent(`<img src="${response.datauri}" alt="QR Code for ${formData.content}" />`);
-                                        } else {
-                                            console.error('No target editor found');
+                                            targetEditor.insertContent(`<img src="${response.datauri}" alt="${altTextPrefix}  ${formData.content}" />`);
                                         }
-                                    } else {
-                                        console.error('QR Code generation failed');
                                     }
                                     // Clean up the stored editor reference
                                     window.currentQRCodeEditor = null;
                                 },
-                                fail: function(ex) {
-                                    console.error('Web service call failed', ex);
+                                fail: function() {
                                     // Clean up the stored editor reference
                                     window.currentQRCodeEditor = null;
                                 }
@@ -147,7 +147,6 @@ export default class QrcodeModal extends Modal {
                     qrcodeForm.dataset.listenerAttached = true;
                 }
             } else {
-                console.warn('Form not found. Retrying...');
                 setTimeout(attachSubmitHandler, 500);
             }
         };
