@@ -33,9 +33,10 @@ export default class QrcodeModal extends Modal {
     static TEMPLATE = `${component}/insert_qrcode_modal`;
 
     registerEventListeners() {
+        super.registerEventListeners();
 
-        const attachSubmitHandler = async() => {
-            const altTextPrefix = await getString('altTextPrefix', 'tiny_qrcode');
+        const attachSubmitHandler = () => {
+            const altTextPrefix = getString('altTextPrefix', 'tiny_qrcode');
 
             const qrcodeForm = window.document.getElementById('qrcode-submit');
             const closebtn= window.document.querySelector('div.modal div.modal-content div.modal-header button.btn-close');

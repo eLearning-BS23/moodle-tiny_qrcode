@@ -37,8 +37,9 @@ export default class QrcodeImage {
         this.editor = editor;
     }
     async displayDialogue() {
+        // Use the fetched string in the modal
         this.currentModal = await QrcodeModal.create({
-            title: await getString('title', 'tiny_qrcode'),
+            title: getString('title', 'tiny_qrcode'),
         });
     }
 }
