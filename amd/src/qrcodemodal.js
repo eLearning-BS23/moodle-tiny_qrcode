@@ -37,6 +37,7 @@ export default class QrcodeModal extends Modal {
 
         const attachSubmitHandler = () => {
             const altTextPrefix = getString('altTextPrefix', 'tiny_qrcode');
+
             const qrcodeForm = window.document.getElementById('qrcode-submit');
             const closebtn= window.document.querySelector('div.modal div.modal-content div.modal-header button.btn-close');
             const closebtn1= window.document.querySelector('div.modal div.modal-content div.modal-header button.close');
@@ -48,6 +49,7 @@ export default class QrcodeModal extends Modal {
                 closebtn1.addEventListener( 'click', (event) => {
                     this.destroy();
                 });}
+
             if (qrcodeForm) {
                 if (!qrcodeForm.dataset.listenerAttached) {
                     qrcodeForm.addEventListener( 'click', (event) => {
