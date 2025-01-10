@@ -28,3 +28,5 @@ defined('MOODLE_INTERNAL') || die();
 $plugin->version   = 2024110301;
 $plugin->requires  = 2022112800;
 $plugin->component = 'tiny_qrcode';
+$plugin->release = '0.1.1';
+$plugin->maturity = MATURITY_STABLE;
