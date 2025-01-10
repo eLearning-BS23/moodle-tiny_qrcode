@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Endroid\QrCode\Encoding;
 
-final readonly class Encoding implements EncodingInterface
+final class Encoding implements EncodingInterface
 {
     public function __construct(
-        private string $value,
+        private readonly string $value
     ) {
         if ('UTF-8' !== $value) {
             if (!function_exists('mb_list_encodings')) {
