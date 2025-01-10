@@ -25,6 +25,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2024110202;
+$plugin->version   = 2024110301;
 $plugin->requires  = 2022112800;
 $plugin->component = 'tiny_qrcode';
