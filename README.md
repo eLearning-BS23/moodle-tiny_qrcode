@@ -23,6 +23,16 @@ This library helps you generate QR codes in a jiffy. Makes use of bacon/bacon-qr
 You can install this plugin from [Moodle plugins directory](https://moodle.org/plugins) or can download from [Github](https://github.com/eLearning-BS23/moodle-tiny_qrcode).
 You can download zip file and install or you can put file under lib/editor/tiny/plugins as qrcode. 
 
+## 🔧 Minimum System Requirements
+```markdown
+✨ **Essential Prerequisites:**
+
+- 🎯 Moodle: Version 4.1 or higher required for proper functionality
+- 🚀 PHP: Version 8.1 or higher required for core features  
+- 🌐 Modern web browser with JavaScript enabled
+- 💻 Server with minimum 256MB memory allocation for PHP
+```
+
 ## Plugin Usage
 > After installing the plugin, you can use the plugin by following:
 
