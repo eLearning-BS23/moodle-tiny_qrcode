@@ -10,7 +10,7 @@ use Endroid\QrCode\Matrix\MatrixFactoryInterface;
 use Endroid\QrCode\Matrix\MatrixInterface;
 use Endroid\QrCode\QrCodeInterface;
 
-final readonly class MatrixFactory implements MatrixFactoryInterface
+final class MatrixFactory implements MatrixFactoryInterface
 {
     public function create(QrCodeInterface $qrCode): MatrixInterface
     {
