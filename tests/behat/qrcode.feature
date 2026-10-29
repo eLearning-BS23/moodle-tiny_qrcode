@@ -25,4 +25,6 @@ Feature: TinyMCE QR code insertion
     When I set the field "QR code content" to "https://moodle.org"
     And I click on "Insert QR code" "button" in the "Insert QR code" "dialogue"
     Then "Insert QR code" "dialogue" should not exist
-    And the "Course summary" TinyMCE editor content should contain "img class=\"img-fluid tiny-qrcode\""
+    And I switch to the "Course summary" TinyMCE editor iframe
+    And "//img[contains(@class, 'tiny-qrcode')]" "xpath_element" should exist
+    And I switch to the main frame
