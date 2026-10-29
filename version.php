@@ -15,18 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Tiny qrcode plugin.
+ * Version information for tiny_qrcode plugin.
  *
  * @package    tiny_qrcode
  * @copyright  2024 Brain Station 23 Ltd. <brainstation-23.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2024110301;
-$plugin->requires  = 2022112800;
+$plugin->version   = 2026102901;
+$plugin->requires  = 2022112800; // Requires Moodle 4.1 LTS or higher with PHP 8.1+.
 $plugin->component = 'tiny_qrcode';
-$plugin->release = '0.1.1';
-$plugin->maturity = MATURITY_STABLE;
+$plugin->release   = '1.0.0';
+$plugin->maturity  = MATURITY_STABLE;

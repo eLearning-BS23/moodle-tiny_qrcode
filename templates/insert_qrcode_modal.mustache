@@ -14,61 +14,71 @@
     You should have received a copy of the GNU General Public License
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
+{{!
+    @template tiny_qrcode/insert_qrcode_modal
 
+    QR Code insertion modal.
+
+    Classes required for JS:
+    * none
+
+    Data attributes required for JS:
+    * none
+
+    Context variables required for this template:
+    * none
+
+    Example context (json):
+    {}
+}}
 {{< core/modal }}
     {{$body}}
-        <form class="mform tiny_form tiny_qrcode" method="post" id="tiny_qrcode_form">
-           
-            <label for="qrcodecontent" style="padding-bottom: 5px; margin-bottom: 0; padding-top: 0px;">
-                {{#str}} qrcodecontent, tiny_qrcode {{/str}}
-            </label>
-            <input class="form-control fullwidth" type="text" id="qrcodecontent" required="true" placeholder="e.g. https://www.google.com/ " />
-            
+        <form class="mform tiny_form tiny_qrcode" id="tiny_qrcode_form">
+            <div class="form-group mb-3">
+                <label for="qrcodecontent" class="form-label font-weight-bold">
+                    {{#str}} qrcodecontent, tiny_qrcode {{/str}}
+                </label>
+                <input class="form-control" type="text" id="qrcodecontent" required placeholder="https://example.com">
+            </div>
 
-            <label for="qrcode_size"  style="padding-bottom: 5px; margin-bottom: 0; padding-top: 10px;">
-                {{#str}} qrcode_size, tiny_qrcode {{/str}}
-            </label>
-            <input class="form-control fullwidth" type="number" id="qrcode_size" required="true" size="10" 
-                value="200" min="25" max="1000" />
-             
+            <div class="row mb-3">
+                <div class="col-6">
+                    <label for="qrcode_size" class="form-label font-weight-bold">
+                        {{#str}} qrcode_size, tiny_qrcode {{/str}}
+                    </label>
+                    <input class="form-control" type="number" id="qrcode_size" value="200" min="50" max="1000" required>
+                </div>
+                <div class="col-6">
+                    <label for="qrcode_margin" class="form-label font-weight-bold">
+                        {{#str}} qrcode_margin, tiny_qrcode {{/str}}
+                    </label>
+                    <input class="form-control" type="number" id="qrcode_margin" value="10" min="0" max="50" required>
+                </div>
+            </div>
 
-            <label for="qrcode_margin"  style="padding-bottom: 5px; margin-bottom: 0; padding-top: 10px;">
-                {{#str}} qrcode_margin, tiny_qrcode {{/str}}
-            </label>
-            <input class="form-control fullwidth" type="number" id="qrcode_margin" size="10" min="5" max="100" 
-                required="true" value="10" />
-             
-
-            <label for="qrcode_backgroundcolor"  style="padding-bottom: 5px; margin-bottom: 0; padding-top: 20px;">
-                {{#str}} backgroundcolor, tiny_qrcode {{/str}}
-            </label>
-            <input type="color" id="bgtemplateColor" name="bgtemplateColor" value="#ffffff" class="color-circle">
-            <br>
-            
-            <label for="qrcode_foregroundcolor"  style="padding-bottom: 0px; margin-bottom: 0; padding-top: 20px;">
-                {{#str}} forgroungcolor, tiny_qrcode {{/str}}
-            </label>
-            <input type="color" id="templateColor" name="templateColor" value="#000000" class="color-circle" style="padding-bottom: 0px; margin-bottom: 0;">
-            
-
-            <div class="mdl-align"  style="padding-bottom: 0; margin-bottom: 0; padding-top: 15px;">
-                <br>
-                <button class="btn btn-secondary submit" type="button" id="qrcode-submit">
-                    {{#str}} insertqrcode, tiny_qrcode {{/str}}
-                </button>
+            <div class="row mb-2">
+                <div class="col-6">
+                    <label for="bgtemplateColor" class="form-label font-weight-bold d-block">
+                        {{#str}} backgroundcolor, tiny_qrcode {{/str}}
+                    </label>
+                    <input type="color" id="bgtemplateColor" name="bgtemplateColor" value="#ffffff" class="form-control form-control-color qrcode-color-picker">
+                </div>
+                <div class="col-6">
+                    <label for="templateColor" class="form-label font-weight-bold d-block">
+                        {{#str}} foregroundcolor, tiny_qrcode {{/str}}
+                    </label>
+                    <input type="color" id="templateColor" name="templateColor" value="#000000" class="form-control form-control-color qrcode-color-picker">
+                </div>
             </div>
         </form>
-
     {{/body}}
 
+    {{$footer}}
+        <button class="btn btn-secondary" data-action="cancel" type="button">
+            {{#str}} cancel, core {{/str}}
+        </button>
+        <button class="btn btn-primary" type="button" id="qrcode-submit">
+            {{#str}} insertqrcode, tiny_qrcode {{/str}}
+        </button>
+    {{/footer}}
 {{/ core/modal }}
-
-<style>
-    .color-circle {
-        width: 30px;
-        height: 30px;
-        border-radius: 10%;
-        padding: 0;
-        cursor: pointer;
-    }
-</style>

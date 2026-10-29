@@ -1,0 +1,20 @@
+/**
+ * Styles for tiny_qrcode plugin.
+ *
+ * @package    tiny_qrcode
+ * @copyright  2024 Brain Station 23 Ltd. <brainstation-23.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+.tiny_qrcode .qrcode-color-picker {
+    width: 48px;
+    height: 38px;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.tiny-qrcode {
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+}

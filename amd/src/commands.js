@@ -14,46 +14,34 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Generate the QR code.
+ * Commands registration for tiny_qrcode.
  *
  * @module     tiny_qrcode/commands
  * @copyright  2024 Brain Station 23 Ltd. <brainstation-23.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
  */
 
-import { qrcodeButtonName, component } from './common';
-import QrcodeImage from './qrcode';
+import {component, qrcodeButtonName} from './common';
+import QrcodeModal from './qrcodemodal';
 import {getString} from 'core/str';
 
-
-const registerImageCommand = (editor, qrcodeButtonText) => {
-    const imageIcon = 'qrcode';
-
-    const handleImageAction = async () => {
-        // Store a reference to the current editor when the QR code dialogue is opened
-        window.currentQRCodeEditor = editor;
-        const qrcodeImage = new QrcodeImage(editor);
-        qrcodeImage.displayDialogue();
-    };
-
-    editor.ui.registry.addToggleButton(qrcodeButtonName, {
-        icon: imageIcon,
-        tooltip: qrcodeButtonText,
-        onAction: handleImageAction,
-        onSetup: (api) => {
-            return editor.selection.selectorChangedWithUnbind(
-                'img:not([data-mce-object]):not([data-mce-placeholder]),figure.image',
-                api.setActive
-            ).unbind;
+const registerImageCommand = (editor, buttonTitle) => {
+    editor.ui.registry.addButton(qrcodeButtonName, {
+        icon: 'qrcode',
+        tooltip: buttonTitle,
+        onAction: () => {
+            QrcodeModal.create({
+                title: getString('title', component),
+            }, editor);
         },
     });
 };
-export const getSetup = async () => {
-    const qrcodeButtonText = await getString('insertqrcode', component);
+
+export const getSetup = async() => {
+    const buttonTitle = await getString('insertqrcode', component);
     return (editor) => {
-        registerImageCommand(editor, qrcodeButtonText);
+        registerImageCommand(editor, buttonTitle);
     };
 };
 
-export default { getSetup };
+export default {getSetup};

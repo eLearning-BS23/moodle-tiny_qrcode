@@ -15,31 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Tiny qrcode plugin.
+ * Web service function registrations for tiny_qrcode.
  *
  * @package    tiny_qrcode
  * @copyright  2024 Brain Station 23 Ltd. <brainstation-23.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$services = [
-    'tiny_qrcode_generate' => [
-        'functions' => ['tiny_qrcode_generate_qr_code'],
-        'restrictedusers' => 0,
-        'enabled' => 1,
-    ],
-];
-
 $functions = [
     'tiny_qrcode_generate_qr_code' => [
-        'classname'   => 'tiny_qrcode_external',
-        'methodname'  => 'generate_qr_code',
-        'classpath'   => 'lib/editor/tiny/plugins/qrcode/externallib.php',
-        'description' => 'Generate a QR code with custom parameters',
-        'type'        => 'read',
-        'ajax'        => true,
+        'classname'     => \tiny_qrcode\external\generate_qr_code::class,
+        'methodname'    => 'execute',
+        'description'   => 'Generate a QR code image with custom parameters',
+        'type'          => 'read',
+        'ajax'          => true,
+        'loginrequired' => true,
     ],
 ];

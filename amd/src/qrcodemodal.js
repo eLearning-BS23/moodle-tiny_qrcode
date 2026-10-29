@@ -14,148 +14,143 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Generate the QR code.
+ * QR Code insertion modal dialog.
  *
  * @module     tiny_qrcode/qrcodemodal
  * @copyright  2024 Brain Station 23 Ltd. <brainstation-23.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
  */
 
 import Modal from 'core/modal';
-import {component} from './common';
+import {component, qrcodeModalType} from './common';
 import AJAX from 'core/ajax';
 import {getString} from 'core/str';
+import Notification from 'core/notification';
 
 export default class QrcodeModal extends Modal {
 
-    static TYPE = `${component}/qrcodemodal`;
+    static TYPE = qrcodeModalType;
     static TEMPLATE = `${component}/insert_qrcode_modal`;
+
+    editor = null;
+
+    /**
+     * Factory method to create modal with editor reference.
+     *
+     * @param {Object} modalConfig
+     * @param {Object} editor
+     * @return {Promise<QrcodeModal>}
+     */
+    static async create(modalConfig = {}, editor = null) {
+        const modal = await super.create(modalConfig);
+        modal.editor = editor;
+        return modal;
+    }
+
+    /**
+     * Configure modal defaults.
+     *
+     * @param {Object} modalConfig
+     */
+    configure(modalConfig) {
+        modalConfig.show = true;
+        modalConfig.removeOnClose = true;
+
+        super.configure(modalConfig);
+    }
 
     registerEventListeners() {
         super.registerEventListeners();
 
-        const attachSubmitHandler = () => {
-            const altTextPrefix = getString('altTextPrefix', 'tiny_qrcode');
+        this.registerCloseOnCancel();
 
-            const qrcodeForm = window.document.getElementById('qrcode-submit');
-            const closebtn= window.document.querySelector('div.modal div.modal-content div.modal-header button.btn-close');
-            const closebtn1= window.document.querySelector('div.modal div.modal-content div.modal-header button.close');
-            if (closebtn){
-                closebtn.addEventListener( 'click', (event) => {
-                    this.destroy();
-                });}
-            if (closebtn1){
-                closebtn1.addEventListener( 'click', (event) => {
-                    this.destroy();
-                });}
+        const root = this.getRoot();
 
-            if (qrcodeForm) {
-                if (!qrcodeForm.dataset.listenerAttached) {
-                    qrcodeForm.addEventListener( 'click', (event) => {
-                        event.preventDefault();
-                        let flag=0;
+        root.on('submit', '#tiny_qrcode_form', (e) => {
+            e.preventDefault();
+            this.handleFormSubmit();
+        });
 
-                        const qrsize = window.document.querySelector('#qrcode_size').value;
-                        if(qrsize > 1000 || qrsize < 25){
-                            window.document.querySelector('#qrcode_size').style.border = '2px solid red';
-                            flag=1;
-                        } else{
-                            window.document.querySelector('#qrcode_size').style.border = '1px solid black';
-                        }
-
-                        const qrmargin = window.document.querySelector('#qrcode_margin').value;
-                        if(qrmargin> 100 || qrmargin < 5){
-                            window.document.querySelector('#qrcode_margin').style.border = '2px solid red';
-                            flag=1;
-                        } else {
-                            window.document.querySelector('#qrcode_margin').style.border = '1px solid black';
-                        }
-
-                        const contentInput = window.document.querySelector('#qrcodecontent');
-                        if(contentInput.value.trim() === ''){
-                            contentInput.style.border = '2px solid red';
-                            flag=1;
-                        }else{
-                            contentInput.style.border = '1px solid black';
-                        }
-
-                        if(flag){
-                            return;
-                        }
-                        flag=0;
-
-                        if(contentInput.value.trim() !== ''){
-                            const hexToRgba = (hex, alpha = 1) => {
-                                hex = hex.replace(/^#/, '');
-                                const bigint = parseInt(hex, 16);
-                                const r = (bigint >> 16) & 255;
-                                const g = (bigint >> 8) & 255;
-                                const b = bigint & 255;
-                                return {
-                                    r: r,
-                                    g: g,
-                                    b: b,
-                                    a: alpha
-                                };
-                            };
-                            // Prepare form data for submission
-                            const formData = {
-                                content: document.querySelector('#qrcodecontent').value,
-                                size: parseInt(document.querySelector('#qrcode_size').value),
-                                margin: parseInt(document.querySelector('#qrcode_margin').value),
-                                bgColor: hexToRgba(
-                                    document.querySelector('#bgtemplateColor').value,
-                                    parseFloat(document.querySelector('#bgcolor_a')?.value || 1)
-                                ),
-                                fgColor: hexToRgba(
-                                    document.querySelector('#templateColor').value,
-                                    parseFloat(document.querySelector('#color_a')?.value || 1)
-                                ),
-                            };
-                            // Moodle AJAX call to web service
-                            AJAX.call([{
-                                methodname: 'tiny_qrcode_generate_qr_code',
-                                args: {data: JSON.stringify({
-                                    content: formData.content,
-                                    size: formData.size,
-                                    margin: formData.margin,
-                                    bgColor: formData.bgColor,
-                                    fgColor: formData.fgColor,
-                                })},
-                                done: function(response) {
-                                    if (response.status) {
-                                        const targetEditor = window.currentQRCodeEditor;
-                                        if (targetEditor) {
-                                            targetEditor.insertContent(`<img src="${response.datauri}" alt="${altTextPrefix}  ${formData.content}" />`);
-                                        }
-                                    }
-                                    // Clean up the stored editor reference
-                                    window.currentQRCodeEditor = null;
-                                },
-                                fail: function() {
-                                    // Clean up the stored editor reference
-                                    window.currentQRCodeEditor = null;
-                                }
-                            }]);
-                            this.destroy();
-                        }
-                        else{
-                            contentInput.style.border = '2px solid red';
-                            //  return;
-                        }
-                    });
-                    qrcodeForm.dataset.listenerAttached = true;
-                }
-            } else {
-                setTimeout(attachSubmitHandler, 500);
-            }
-        };
-        // Attach the submit handler
-        attachSubmitHandler();
+        root.on('click', '#qrcode-submit', (e) => {
+            e.preventDefault();
+            this.handleFormSubmit();
+        });
     }
-    configure(modalConfig) {
-        modalConfig.show = true;
-        super.configure(modalConfig);
+
+    async handleFormSubmit() {
+        const root = this.getRoot()[0];
+        const contentInput = root.querySelector('#qrcodecontent');
+        const sizeInput = root.querySelector('#qrcode_size');
+        const marginInput = root.querySelector('#qrcode_margin');
+        const bgColorInput = root.querySelector('#bgtemplateColor');
+        const fgColorInput = root.querySelector('#templateColor');
+        const submitBtn = root.querySelector('#qrcode-submit');
+
+        const content = contentInput.value.trim();
+        const size = parseInt(sizeInput.value, 10) || 200;
+        const margin = parseInt(marginInput.value, 10) || 10;
+
+        if (!content) {
+            contentInput.classList.add('is-invalid');
+            contentInput.focus();
+            return;
+        }
+        contentInput.classList.remove('is-invalid');
+
+        const hexToRgb = (hex) => {
+            const clean = hex.replace(/^#/, '');
+            const bigint = parseInt(clean, 16);
+            return {
+                r: Math.floor(bigint / 65536) % 256,
+                g: Math.floor(bigint / 256) % 256,
+                b: bigint % 256,
+            };
+        };
+
+        submitBtn.disabled = true;
+
+        try {
+            const altPrefix = await getString('altTextPrefix', component);
+            const response = await AJAX.call([{
+                methodname: 'tiny_qrcode_generate_qr_code',
+                args: {
+                    content,
+                    size,
+                    margin,
+                    bgcolor: hexToRgb(bgColorInput.value),
+                    fgcolor: hexToRgb(fgColorInput.value),
+                },
+            }])[0];
+
+            if (response.status && this.editor) {
+                const escapeAttr = (str) => {
+                    return String(str)
+                        .replace(/&/g, '&amp;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#39;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
+                };
+
+                const safeAlt = escapeAttr(`${altPrefix}: ${content}`);
+                const safeSrc = escapeAttr(response.datauri);
+
+                this.editor.insertContent(
+                    `<img src="${safeSrc}" alt="${safeAlt}" class="img-fluid tiny-qrcode" />`
+                );
+                this.destroy();
+            } else {
+                Notification.addNotification({
+                    message: response.error || await getString('qrcode_insert_failed', component),
+                    type: 'error',
+                });
+                submitBtn.disabled = false;
+            }
+        } catch (error) {
+            Notification.exception(error);
+            submitBtn.disabled = false;
+        }
     }
 }
+
+QrcodeModal.registerModalType();

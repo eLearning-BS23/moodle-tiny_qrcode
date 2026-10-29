@@ -14,32 +14,28 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Generate the QR code.
+ * QR Code dialogue helper.
  *
  * @module     tiny_qrcode/qrcode
  * @copyright  2024 Brain Station 23 Ltd. <brainstation-23.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
  */
 
 import QrcodeModal from './qrcodemodal';
 import {getString} from 'core/str';
+import {component} from './common';
 
 export default class QrcodeImage {
     editor = null;
     currentModal = null;
-    /**
-     * @type {HTMLElement|null} The root element.
-     */
-    root = null;
 
     constructor(editor) {
         this.editor = editor;
     }
+
     async displayDialogue() {
-        // Use the fetched string in the modal
         this.currentModal = await QrcodeModal.create({
-            title: getString('title', 'tiny_qrcode'),
-        });
+            title: getString('title', component),
+        }, this.editor);
     }
 }

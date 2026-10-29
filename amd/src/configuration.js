@@ -14,25 +14,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Generate the QR code.
+ * Configuration for tiny_qrcode.
  *
  * @module     tiny_qrcode/configuration
  * @copyright  2024 Brain Station 23 Ltd. <brainstation-23.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
  */
 
 import {qrcodeButtonName} from './common';
-import { addContextmenuItem,} from 'editor_tiny/utils';
+import {addContextmenuItem} from 'editor_tiny/utils';
 
 const configureMenu = (menu) => {
     return menu;
 };
 
 const configureToolbar = (toolbar) => {
-    // The toolbar contains an array of named sections.
-    // The Moodle integration ensures that there is a section called 'content'.
-
     return toolbar.map((section) => {
         if (section.name === 'content') {
             section.items.unshift(qrcodeButtonName);
@@ -42,7 +38,6 @@ const configureToolbar = (toolbar) => {
 };
 
 export const configure = (instanceConfig) => {
-    // Update the instance configuration to add the Qrcode menu option to the menus and toolbars and upload_handler.
     return {
         contextmenu: addContextmenuItem(instanceConfig.contextmenu, qrcodeButtonName),
         menu: configureMenu(instanceConfig.menu),

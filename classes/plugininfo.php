@@ -19,16 +19,47 @@ namespace tiny_qrcode;
 use context;
 use editor_tiny\editor;
 use editor_tiny\plugin;
+use editor_tiny\plugin_with_buttons;
 use editor_tiny\plugin_with_configuration;
 
 /**
- * Tiny qrcode plugin.
+ * Tiny qrcode plugin info.
  *
  * @package    tiny_qrcode
  * @copyright  2024 Brain Station 23 Ltd. <brainstation-23.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class plugininfo extends plugin implements plugin_with_configuration {
+class plugininfo extends plugin implements plugin_with_buttons, plugin_with_configuration {
+    /**
+     * Whether the plugin is enabled in this context.
+     *
+     * @param context $context
+     * @param array $options
+     * @param array $fpoptions
+     * @param editor|null $editor
+     * @return bool
+     */
+    public static function is_enabled(
+        context $context,
+        array $options,
+        array $fpoptions,
+        ?editor $editor = null
+    ): bool {
+        unset($options, $fpoptions, $editor);
+        return isloggedin() && !isguestuser() && has_capability('tiny/qrcode:use', $context);
+    }
+
+    /**
+     * Get list of available buttons for TinyMCE toolbar settings.
+     *
+     * @return array
+     */
+    public static function get_available_buttons(): array {
+        return [
+            'tiny_qrcode/qrcode',
+        ];
+    }
+
     /**
      * Retrieves the plugin configuration for a specific context.
      *
@@ -44,13 +75,12 @@ class plugininfo extends plugin implements plugin_with_configuration {
         array $fpoptions,
         ?editor $editor = null
     ): array {
-        $permissions = [
-            'insert_qrcode' => true, // Assuming all users can insert QR codes.
-        ];
-
+        unset($options, $fpoptions, $editor);
         return [
-            'permissions' => $permissions,
+            'permissions' => [
+                'insert_qrcode' => has_capability('tiny/qrcode:use', $context),
+            ],
+            'contextid' => $context->id,
         ];
     }
 }
-

@@ -14,19 +14,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Generate the QR code.
+ * Common constants for the tiny_qrcode plugin.
  *
  * @module     tiny_qrcode/common
  * @copyright  2024 Brain Station 23 Ltd. <brainstation-23.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
  */
 
-
-export default {
-    pluginName: 'tiny_qrcode/plugin',
-    component: 'tiny_qrcode',
-    qrcodeButtonName: 'tiny_qrcode_image',
-    qrcodeManagerButtonName: 'tiny_qrcodemanager',
-};
-
+export const component = 'tiny_qrcode';
+export const pluginName = `${component}/plugin`;
+export const qrcodeButtonName = `${component}/qrcode`;
+export const qrcodeModalType = `${component}/qrcodemodal`;
