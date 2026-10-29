@@ -26,6 +26,7 @@ use invalid_parameter_exception;
 use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Writer\SvgWriter;
 use Endroid\QrCode\ErrorCorrectionLevel;
 
 defined('MOODLE_INTERNAL') || die();
@@ -71,11 +72,23 @@ class generate_qr_code extends external_api {
                 'g' => new external_value(PARAM_INT, 'Green component 0-255', VALUE_DEFAULT, 0),
                 'b' => new external_value(PARAM_INT, 'Blue component 0-255', VALUE_DEFAULT, 0),
             ], 'Foreground RGB color', VALUE_DEFAULT, []),
+            'ecc' => new external_value(
+                PARAM_ALPHA,
+                'Error correction level: low, medium, quartile, high',
+                VALUE_DEFAULT,
+                'medium'
+            ),
+            'format' => new external_value(
+                PARAM_ALPHA,
+                'Image output format: png, svg',
+                VALUE_DEFAULT,
+                'png'
+            ),
         ]);
     }
 
     /**
-     * Generate a QR code image as a Data URI PNG.
+     * Generate a QR code image as a Data URI PNG or SVG.
      *
      * @param int|null $contextid
      * @param string $content
@@ -83,6 +96,8 @@ class generate_qr_code extends external_api {
      * @param int $margin
      * @param array $bgcolor
      * @param array $fgcolor
+     * @param string $ecc
+     * @param string $format
      * @return array
      */
     public static function execute(
@@ -91,7 +106,9 @@ class generate_qr_code extends external_api {
         int $size = 200,
         int $margin = 10,
         array $bgcolor = [],
-        array $fgcolor = []
+        array $fgcolor = [],
+        string $ecc = 'medium',
+        string $format = 'png'
     ): array {
         $params = self::validate_parameters(self::execute_parameters(), [
             'contextid' => $contextid,
@@ -100,6 +117,8 @@ class generate_qr_code extends external_api {
             'margin' => $margin,
             'bgcolor' => $bgcolor,
             'fgcolor' => $fgcolor,
+            'ecc' => $ecc,
+            'format' => $format,
         ]);
 
         $context = $params['contextid'] ? context_helper::instance_by_id($params['contextid']) : context_system::instance();
@@ -122,11 +141,13 @@ class generate_qr_code extends external_api {
         $fgg = max(0, min(255, $params['fgcolor']['g'] ?? 0));
         $fgb = max(0, min(255, $params['fgcolor']['b'] ?? 0));
 
+        $ecclevel = ErrorCorrectionLevel::tryFrom(strtolower($params['ecc'])) ?? ErrorCorrectionLevel::Medium;
+        $writer = (strtolower($params['format']) === 'svg') ? new SvgWriter() : new PngWriter();
+
         try {
-            $writer = new PngWriter();
             $qrcode = new QrCode(
                 data: $params['content'],
-                errorCorrectionLevel: ErrorCorrectionLevel::Medium,
+                errorCorrectionLevel: $ecclevel,
                 size: $size,
                 margin: $margin,
                 foregroundColor: new Color($fgr, $fgg, $fgb),

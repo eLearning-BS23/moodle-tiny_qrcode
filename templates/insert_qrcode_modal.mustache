@@ -17,7 +17,7 @@
 {{!
     @template tiny_qrcode/insert_qrcode_modal
 
-    QR Code insertion modal.
+    QR Code insertion modal with sliding live preview and contrast diagnostics.
 
     Classes required for JS:
     * none
@@ -34,40 +34,96 @@
 {{< core/modal }}
     {{$body}}
         <form class="mform tiny_form tiny_qrcode" id="tiny_qrcode_form">
-            <div class="form-group mb-3">
-                <label for="qrcodecontent" class="form-label font-weight-bold">
-                    {{#str}} qrcodecontent, tiny_qrcode {{/str}}
-                </label>
-                <input class="form-control" type="text" id="qrcodecontent" required placeholder="https://example.com">
-            </div>
+            <div class="qrcode-modal-layout">
+                <div class="qrcode-form-column">
+                    <div class="form-group mb-3">
+                        <label for="qrcodecontent" class="form-label font-weight-bold">
+                            {{#str}} qrcodecontent, tiny_qrcode {{/str}}
+                        </label>
+                        <textarea class="form-control" id="qrcodecontent" rows="2" required placeholder="https://example.com" autofocus></textarea>
+                    </div>
 
-            <div class="row mb-3">
-                <div class="col-6">
-                    <label for="qrcode_size" class="form-label font-weight-bold">
-                        {{#str}} qrcode_size, tiny_qrcode {{/str}}
-                    </label>
-                    <input class="form-control" type="number" id="qrcode_size" value="200" min="50" max="1000" required>
-                </div>
-                <div class="col-6">
-                    <label for="qrcode_margin" class="form-label font-weight-bold">
-                        {{#str}} qrcode_margin, tiny_qrcode {{/str}}
-                    </label>
-                    <input class="form-control" type="number" id="qrcode_margin" value="10" min="0" max="50" required>
-                </div>
-            </div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <label for="qrcode_size" class="form-label font-weight-bold">
+                                {{#str}} qrcode_size, tiny_qrcode {{/str}}
+                            </label>
+                            <input class="form-control" type="number" id="qrcode_size" value="200" min="50" max="1000" required>
+                        </div>
+                        <div class="col-6">
+                            <label for="qrcode_margin" class="form-label font-weight-bold">
+                                {{#str}} qrcode_margin, tiny_qrcode {{/str}}
+                            </label>
+                            <input class="form-control" type="number" id="qrcode_margin" value="10" min="0" max="50" required>
+                        </div>
+                    </div>
 
-            <div class="row mb-2">
-                <div class="col-6">
-                    <label for="bgtemplateColor" class="form-label font-weight-bold d-block">
-                        {{#str}} backgroundcolor, tiny_qrcode {{/str}}
-                    </label>
-                    <input type="color" id="bgtemplateColor" name="bgtemplateColor" value="#ffffff" class="form-control form-control-color qrcode-color-picker">
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <label for="qrcode_format" class="form-label font-weight-bold">
+                                {{#str}} format, tiny_qrcode {{/str}}
+                            </label>
+                            <select class="form-select custom-select w-100" id="qrcode_format">
+                                <option value="png" selected>{{#str}} format_png, tiny_qrcode {{/str}}</option>
+                                <option value="svg">{{#str}} format_svg, tiny_qrcode {{/str}}</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label for="qrcode_ecc" class="form-label font-weight-bold">
+                                {{#str}} errorcorrection, tiny_qrcode {{/str}}
+                            </label>
+                            <select class="form-select custom-select w-100" id="qrcode_ecc">
+                                <option value="low">{{#str}} ecc_low, tiny_qrcode {{/str}}</option>
+                                <option value="medium" selected>{{#str}} ecc_medium, tiny_qrcode {{/str}}</option>
+                                <option value="quartile">{{#str}} ecc_quartile, tiny_qrcode {{/str}}</option>
+                                <option value="high">{{#str}} ecc_high, tiny_qrcode {{/str}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-6">
+                            <label for="bgtemplateColor" class="form-label font-weight-bold d-block">
+                                {{#str}} backgroundcolor, tiny_qrcode {{/str}}
+                            </label>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="color" id="bgtemplateColor" name="bgtemplateColor" value="#ffffff" class="form-control form-control-color qrcode-color-picker flex-shrink-0" style="width: 48px; min-width: 48px; height: 38px; padding: 2px; cursor: pointer;">
+                                <span class="small text-muted font-monospace" id="bgtemplateColorVal">#FFFFFF</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <label for="templateColor" class="form-label font-weight-bold d-block">
+                                {{#str}} foregroundcolor, tiny_qrcode {{/str}}
+                            </label>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="color" id="templateColor" name="templateColor" value="#000000" class="form-control form-control-color qrcode-color-picker flex-shrink-0" style="width: 48px; min-width: 48px; height: 38px; padding: 2px; cursor: pointer;">
+                                <span class="small text-muted font-monospace" id="templateColorVal">#000000</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-6">
-                    <label for="templateColor" class="form-label font-weight-bold d-block">
-                        {{#str}} foregroundcolor, tiny_qrcode {{/str}}
-                    </label>
-                    <input type="color" id="templateColor" name="templateColor" value="#000000" class="form-control form-control-color qrcode-color-picker">
+
+                <div class="qrcode-preview-column" id="qrcode-preview-column">
+                    <div class="qrcode-preview-card p-3 border rounded bg-light text-center h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="fw-bold small text-uppercase text-muted">{{#str}} livepreview, tiny_qrcode {{/str}}</span>
+                                <span id="qrcode-contrast-badge" class="badge bg-secondary">WCAG --</span>
+                            </div>
+
+                            <div class="qrcode-preview-box my-3 d-flex align-items-center justify-content-center p-2 rounded bg-white shadow-sm">
+                                <img id="qrcode-preview-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="{{#str}} livepreview, tiny_qrcode {{/str}}" class="img-fluid d-none">
+                                <div id="qrcode-preview-placeholder" class="text-muted small py-4">
+                                    <div class="mb-2"><span class="badge bg-light text-secondary border">QR</span></div>
+                                    <span>{{#str}} livepreview, tiny_qrcode {{/str}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="small text-muted text-start mt-2 border-top pt-2">
+                            <span id="qrcode-contrast-text">{{#str}} preview_hint, tiny_qrcode {{/str}}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>

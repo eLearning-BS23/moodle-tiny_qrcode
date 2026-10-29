@@ -6,15 +6,99 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+/* Color picker swatch button */
 .tiny_qrcode .qrcode-color-picker {
-    width: 48px;
-    height: 38px;
-    padding: 2px;
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    height: 38px !important;
+    padding: 2px !important;
     cursor: pointer;
+    flex-shrink: 0 !important;
+    border-radius: 6px !important;
+    border: 1px solid #ced4da !important;
 }
 
+/* Inserted QR code image styling in TinyMCE */
 .tiny-qrcode {
     display: inline-block;
     max-width: 100%;
     height: auto;
+}
+
+/* Modal Dialog width transition */
+.tiny_qrcode_modal_dialog {
+    max-width: 520px;
+    transition: max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.tiny_qrcode_modal_dialog.has-preview {
+    max-width: 860px;
+}
+
+/* Modal form layout with breathing room for focus glow rings */
+.tiny_qrcode .qrcode-modal-layout {
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    padding: 6px;
+    margin: -6px;
+}
+
+.tiny_qrcode .qrcode-form-column {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 4px;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Ensure focus outlines and box-shadows are never obscured or clipped */
+.tiny_qrcode .form-control:focus,
+.tiny_qrcode .form-select:focus {
+    position: relative;
+    z-index: 2;
+}
+
+.tiny_qrcode .form-label {
+    margin-bottom: 0.35rem;
+}
+
+/* Preview column sliding drawer effect */
+.tiny_qrcode .qrcode-preview-column {
+    width: 0;
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateX(40px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    margin-left: 0;
+}
+
+/* When preview is visible: smoothly slide in */
+.tiny_qrcode.has-preview .qrcode-preview-column {
+    width: 320px;
+    min-width: 280px;
+    max-width: 340px;
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+    margin-left: 1.25rem;
+}
+
+.tiny_qrcode .qrcode-preview-card {
+    background-color: #f8fafc;
+    border-color: #e2e8f0;
+    min-width: 280px;
+}
+
+.tiny_qrcode .qrcode-preview-box {
+    border: 1px dashed #cbd5e1;
+    min-height: 190px;
+    background-color: #ffffff;
+}
+
+.tiny_qrcode .qrcode-preview-box img {
+    max-height: 170px;
+    object-fit: contain;
 }

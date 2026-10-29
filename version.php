@@ -24,8 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2026102901;
+$plugin->version   = 2026102902;
 $plugin->requires  = 2022112800; // Requires Moodle 4.1 LTS or higher with PHP 8.1+.
 $plugin->component = 'tiny_qrcode';
-$plugin->release   = '1.0.0';
+$plugin->release   = '1.1.0';
 $plugin->maturity  = MATURITY_STABLE;

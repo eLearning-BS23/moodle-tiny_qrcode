@@ -55,6 +55,47 @@ final class external_test extends advanced_testcase {
     }
 
     /**
+     * Test SVG vector output format generation.
+     */
+    public function test_generate_qr_code_svg_format(): void {
+        $user = $this->getDataGenerator()->create_user();
+        $this->setUser($user);
+
+        $result = generate_qr_code::execute(
+            contextid: null,
+            content: 'https://moodle.org/svg',
+            size: 200,
+            margin: 10,
+            bgcolor: ['r' => 255, 'g' => 255, 'b' => 255],
+            fgcolor: ['r' => 0, 'g' => 0, 'b' => 0],
+            ecc: 'high',
+            format: 'svg'
+        );
+
+        $this->assertTrue($result['status']);
+        $this->assertStringStartsWith('data:image/svg+xml;base64,', $result['datauri']);
+    }
+
+    /**
+     * Test various error correction levels.
+     */
+    public function test_generate_qr_code_ecc_levels(): void {
+        $user = $this->getDataGenerator()->create_user();
+        $this->setUser($user);
+
+        foreach (['low', 'medium', 'quartile', 'high'] as $ecc) {
+            $result = generate_qr_code::execute(
+                contextid: null,
+                content: 'ECC Test ' . $ecc,
+                ecc: $ecc,
+                format: 'png'
+            );
+            $this->assertTrue($result['status']);
+            $this->assertNotEmpty($result['datauri']);
+        }
+    }
+
+    /**
      * Test boundary enforcement against DoS/OOM (oversized parameters are clamped).
      */
     public function test_generate_qr_code_enforces_bounds(): void {
